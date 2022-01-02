@@ -1,0 +1,392 @@
+@font-face {
+  font-family: "doodleFont";
+  src: url("assets/KgSecondChancesSketch-KpAp.ttf") format("truetype");
+}
+@font-face {
+  font-family: "niceFont";
+  src: url("assets/BenchNine-Regular.ttf") format("truetype");
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+}
+.rectangle {
+  border-radius: 9px;
+  width: 90px;
+  height: 90px;
+
+  /* background: #845ec2; */
+
+  position: absolute;
+
+  text-align: center;
+  vertical-align: middle;
+  line-height: 90px;
+  font-family: "doodleFont";
+  color: rgb(255, 255, 255);
+  font-size: 54px;
+  user-select: none;
+  cursor: pointer;
+
+  box-shadow: 8px 6px 0px #00000040;
+
+  transition: background-color 0.5s cubic-bezier(0.09, 0.385, 0, 0.975),
+    transform 0.5s cubic-bezier(0.09, 0.385, 0, 0.975);
+}
+.rectangle.info {
+  background: #4D4F80;
+  left: 20px;
+  top: 22px;
+}
+.rectangle.github {
+  background: #fff;
+  left: 20px;
+  top: 146px;
+}
+
+.rectangle:hover {
+  background-color: #000;
+}
+.rectangle:active {
+  transform: scale(1.1, 1.1);
+}
+
+.github_img {
+  transition: filter 0.4s cubic-bezier(0.09, 0.385, 0, 0.975);
+}
+.github_img:hover {
+  filter: invert(100%);
+}
+
+.mainButton {
+  border-radius: 101px;
+  box-shadow: 16px 18px 0px #00000040;
+
+  font-family: "doodleFont";
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  cursor: pointer;
+
+  transition: background-color 0.5s cubic-bezier(0.09, 0.385, 0, 0.975),
+    transform 0.5s cubic-bezier(0.09, 0.385, 0, 0.975);
+}
+.mainButton.web {
+  width: 892px;
+  height: 202px;
+  background: #00c0a3;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+  line-height: 202px;
+  color: rgb(255, 255, 255);
+  font-size: 69px;
+}
+.mainButton.start {
+  width: 542px;
+  height: 94px;
+  background: #ff8066;
+
+  line-height: 94px;
+  color: rgb(255, 255, 255);
+  font-size: 40px;
+}
+
+.mainButton:hover {
+  background-color: #000;
+}
+.mainButton.web:active {
+  transform: translate(-50%, -50%) scale(1.1, 1.1);
+}
+.mainButton.start:active {
+  transform: scale(1.1, 1.1);
+}
+
+#text {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -100%);
+
+  text-align: center;
+
+  font-family: "doodleFont";
+  color: rgb(255, 255, 255);
+  font-size: 25px;
+}
+
+.frame {
+  fill: #ffff;
+
+  /* width:1319.13px; 
+    height:width=624px; */
+  /* background-image: url("dsaw.png");  */
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 1700px) {
+  img.frame {
+    display: none;
+  }
+}
+@media screen and (max-height: 700px) {
+  img.frame {
+    display: none;
+  }
+}
+
+.link:link {
+  color: rgb(54, 180, 92);
+  background-color: transparent;
+  text-decoration: none;
+}
+.link:visited {
+  color: rgb(66, 201, 48);
+  background-color: transparent;
+  text-decoration: none;
+}
+.link:hover {
+  color: rgb(10, 189, 189);
+  background-color: transparent;
+  text-decoration: underline;
+}
+.link:active {
+  color: rgb(187, 63, 63);
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+#non_intractive {
+  pointer-events: none;
+  user-select: none;
+}
+
+/*
+  Drawing window css
+*/
+
+canvas {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+}
+
+.label {
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  background: #4b4453;
+  width: 100%;
+  height: 150px;
+  border-radius: 0 0 55px 55px;
+
+  box-shadow: 9px 8px 0 rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+
+  user-select: none;
+}
+
+.center {
+  position: relative;
+
+  width: fit-content;
+  height: 150px;
+  margin: auto;
+  /* background:#000; */
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+}
+.cover {
+  background: #4d8076;
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  margin: auto;
+  /* background:#000; */
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+
+  transition: top 0.7s cubic-bezier(0.42, 0, 0.20, 1);
+}
+.cover.invisible {
+  top: -100%;
+}
+.cover.visible {
+  top: 0;
+}
+
+.game-canvas {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  z-index: 50;
+  display: none;
+}
+.cover.about {
+  background: #4D4F80;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: auto;
+}
+.cover.about.invisible {
+  top: -100%;
+}
+.cover.about.visible {
+  top: 0;
+}
+
+
+.timerBox {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  background: #00c0a3;
+  width: 140px;
+  height: 68px;
+  border-radius: 28px;
+
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.4);
+
+  font-family: "doodleFont";
+  font-size: 29px;
+
+  user-select: none;
+
+  color: #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+
+  height: 100%;
+  width: fit-content;
+
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  height: 100%;
+  width: fit-content;
+
+  margin-left: auto;
+
+  user-select: none;
+}
+
+.button {
+  width: 52px;
+  height: 52px;
+  border-radius: 100%;
+  background: #fff;
+  box-shadow: 5px 2px 0 rgba(0, 0, 0, 0.4);
+
+  position: relative;
+
+  display: flex;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+
+  user-select: none;
+
+  cursor: pointer;
+
+  transition: background-color 0.5s cubic-bezier(0.09, 0.385, 0, 0.975),
+    transform 0.35s cubic-bezier(0.09, 0.385, 0, 0.975);
+}
+
+.button:hover {
+  background-color: #00c0a3;
+}
+
+.button:active {
+  transform: scale(1.1, 1.1);
+}
+.text {
+  height: 100%;
+  width: 100%;
+
+  font-family: "doodleFont";
+  font-size: 30px;
+
+  user-select: none;
+
+  color: #fff;
+
+  position: relative;
+
+  line-height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+#prediction {
+  position: absolute;
+  left: 50%;
+
+  bottom: 41px;
+  transform: translate(-50%, 0px);
+
+  width: fit-content;
+  height: 95px;
+  background: #4b4453;
+
+  border-radius: 50px;
+
+  box-shadow: 9px 8px 0 rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "doodleFont";
+  font-size: 38px;
+  user-select: none;
+  color: #fff;
+  padding: 0px 27px 0px 27px;
+}

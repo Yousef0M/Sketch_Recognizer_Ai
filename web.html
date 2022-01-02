@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Drawing</title>
+    <link rel="stylesheet" href="style.css">
+
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/3.12.0/tf.min.js"></script>
+
+
+</head>
+
+
+
+<body>
+
+    <div id='main' style="
+            width: 100%; height: 100%; background:#4B4453; position: fixed; left:0px;top:0px;">
+
+        <div class="rectangle info" onclick="toggle_about()">?</div>
+
+        <div class="rectangle github" onclick="location.href='https://github.com/Yousef0M/BetterThanQuickDraw'">
+            <img src="assets/github_logo_scetchy.png" class="github_img" width=100% height=100% draggable="false" />
+        </div>
+
+
+        <div id='mainButton' class="mainButton web"
+            onclick="if (typeof toggle_round_card!== 'undefined') toggle_round_card(true)">
+            START DRAWING
+        </div>
+
+        <img class='frame' id='non_intractive' src=assets/frame.svg></img>
+
+
+
+
+        <div id="text" style="margin-top: -40px; font-size:15px;">The Code is available on <a class="link"
+                href="https://github.com/Yousef0M/BetterThanQuickDraw">github!</a></div>
+        <div id="text" style="margin-top: -5px;">Made By Yousef</div>
+
+
+    </div>
+
+    <div id='round-card' class="cover invisible">
+
+        <div class='column' style="width: 100%; height: fit-content;align-items: center;">
+
+            <div class='text' style="font-size:40px;margin-bottom: 17px;">
+                Draw:
+            </div>
+            <div id='desired_drawing' class='text' style="font-size:120px">
+                Cat
+            </div>
+            <div class='text' style="font-size:40px;margin-top:17px;">
+                Under 20 Seconds :)
+            </div>
+            <div class='mainButton start' style="margin-top:52px;" onclick="toggle_game_canvas()">
+                Let's Go!
+            </div>
+        </div>
+        <!-- <div id='counter' class='text'
+            style='position: absolute;width:fit-content;height:fit-content; line-height: 100%;bottom:15px;left:50%;transform: translateX(-50%);'>
+            0/6</div> -->
+    </div>
+
+    <div id='about' class='cover about invisible'>
+        <div class='button' style="
+            display: flex;
+            position: absolute;
+            justify-content: center;
+            right:0;
+            flex-wrap: wrap;
+            margin-right:15px;
+            margin-top:15px;
+            " onclick="toggle_about()">
+            <img src="assets/exit.svg" id="non_intractive"></img>
+        </div>
+
+        <div class='column' style='width:100%;
+        height:100%;
+        user-select:text;
+        justify-content: initial;
+        
+        '>
+            <div class='text' style="
+            height:fit-content; 
+            font-size:50px;
+            margin-top: 84px;
+            margin-bottom: 45px;
+            flex-direction: unset;
+            ">
+                About This Website
+            </div>
+
+            <div class='text' style='
+            width:60%;  
+            height:fit-content; 
+            margin-left:auto;
+            margin-right:auto;
+            margin-bottom: 138px;
+            line-height: 43px;
+
+            font-family: "niceFont";
+            font-size: 37px;
+            flex-direction: unset;
+            display: inline;
+            user-select:text;
+            '>
+                Artificial intelligence is used on the website to predict what you are drawing. An
+                implementation of the Convolutional Neural Network in Javascript. It takes an image and predicts a
+                number that represents a guess at what the image looks like.
+                <br><br>
+                The network was trained on 150 different concepts from <a class="link"
+                    href="https://quickdraw.withgoogle.com/data">Quick
+                    Draw Data</a> using Python with the TensorFlow
+                library, and the network was implemented in Javascript using TensorFlow.
+                <br><br>
+                <br>
+                The network has 28x28 image input [grayscaled and thresholded image, two values in the image 0=black,
+                1=white].
+                <br><br>
+                The recognition error on the test data set is 11% and the accuracy is 72.5%.
+                <br><br>
+                <br>
+                <br>
+                The website was created by Yousef Mahmood, and my sole purpose was to have fun. It was hugely inspired
+                by the game <a class="link" href="https://quickdraw.withgoogle.com">Quick Draw</a>.
+            </div>
+
+        </div>
+
+    </div>
+    <div id='game-canvas' class='game-canvas'>
+
+        <canvas id='canvas'></canvas>
+        <!-- <canvas id='outcanvas' style='background:rgb(255, 186, 186)'></canvas> -->
+
+        <div id='label' class="label">
+            <div id='inner_desired_drawing' class='text' style='left: 37px;width:30%'>
+                Draw: Cat
+            </div>
+
+            <div class='timerBox'>
+                <p id='timer'>0:30</p>
+            </div>
+
+
+            <div class='row'>
+
+
+                <div class='button' style="margin:auto 15px;" onclick="toggle_round_card()">
+                    <img src="assets/skip.svg" id="non_intractive" style="width:23.17px;margin-left:2.4px;"></img>
+                </div>
+
+
+                <div class='column' style='margin-right:37px;margin-left: auto;'>
+
+                    <div class='button' style="margin-bottom: 17px;" onclick="toggle_game_canvas()">
+                        <img src="assets/exit.svg" id="non_intractive"></img>
+                    </div>
+                    <div class='button' onclick="PEN.clear()">
+                        <img src="assets/erase.svg" id="non_intractive"></img>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div id='prediction'>...</div>
+
+
+    </div>
+
+    <script defer type="text/javascript">
+        async function load_model() {
+            model = await tf.loadLayersModel('./tf_model/model.json');
+            //To warmup the model
+            const warmupResult = model.predict(tf.zeros([1, 28, 28, 1]));
+            warmupResult.dataSync();
+            warmupResult.dispose();
+        }
+        var model;
+        var labels;
+
+        $.getJSON("./labels.json", function (raw_labels) {
+            labels = raw_labels
+        });
+        load_model()
+
+    </script>
+    <script defer src="scripts/rdp.js"></script>
+    <script defer src="scripts/draw.js"></script>
+    <script defer src="scripts/transition.js"></script>
+
+</body>
+
+</html>
