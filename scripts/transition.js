@@ -22,13 +22,11 @@ function toggle_round_card(onlyOpen = false) {
             drawing_history.splice(0, 1);
         }
 
-        // drawing_index = Math.floor(Math.random() * Object.keys(labels).length)
-        drawing_index = Math.floor(Math.random() * 10)
+        drawing_index = Math.floor(Math.random() * Object.keys(labels).length)
         var i = 0
         while (i < drawing_history.length) {
             if (drawing_index == drawing_history[i]) {
-                // drawing_index = Math.floor(Math.random() * Object.keys(labels).length)
-                drawing_index = Math.floor(Math.random() * 22)
+                drawing_index = Math.floor(Math.random() * Object.keys(labels).length)
                 i = -1
             }
             i++
