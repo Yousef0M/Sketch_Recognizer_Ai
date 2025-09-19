@@ -1,4 +1,7 @@
 # Overview
+
+[![Video Title](https://i.ytimg.com/an_webp/NMpVFpKMwL4/mqdefault_6s.webp?du=3000&sqp=CPq3s8YG&rs=AOn4CLBUGp1IWx2ewjQdpmrFzJxcWbxjFw)](https://www.youtube.com/watch?v=NMpVFpKMwL4)
+
 Artificial intelligence is used in the project to predict what you are drawing. An implementation of the Convolutional Neural Network in Javascript. It takes an image and predicts a number that represents a guess at what the image looks like.
 
 The network was trained on 150 different concepts from Quick Draw Data using Python with the TensorFlow library, and the network was implemented in Javascript using TensorFlow.
